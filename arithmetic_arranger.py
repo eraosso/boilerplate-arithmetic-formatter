@@ -2,13 +2,10 @@ def arithmetic_arranger(problems):
     arranged_problems = ""
     resultado = ""
 
-    if isinstance(problems, tuple):
-        problems, resolve = problems
-
-    if len(problems) > 5:
+    if len(problems[0]) > 5:
         return "Error: Too many problems."
 
-    for problema in problems:
+    for problema in problems[0]:
         conta = problema.split()
         if conta[1] not in {"+", "-"}:
             return "Error: Operator must be '+' or '-'."
@@ -17,31 +14,41 @@ def arithmetic_arranger(problems):
         if (len(conta[0]) > 4) | (len(conta[2]) > 4):
             return "Error: Numbers cannot be more than four digits."
     
-    qty = len(problems)
+    qty = len(problems[0])
 
-    op = {'+': lambda x, y: x + y, '-': lambda x, y: x - y}
+    op = {'+': lambda x, y: int(x) + int(y), '-': lambda x, y: int(x) - int(y)}
 
+    primeiro = []
+    operacao = []
+    segundo = []
 
+    for problema in problems[0]:
+        primeiro.append(problema.split()[0])
+        operacao.append(problema.split()[1])
+        segundo.append(problema.split()[2])
+
+    primeira_linha = ""
+    segunda_linha = ""
+    dashes = ""
+    resultado = ""
     for i in range(qty):
-        primeiro = problems[i].split()[0]
-        segundo = problems[i].split()[2]
-        operacao = problems[i].split()[1]
+        primeira_linha += (" " * (5 - len(primeiro[i])) + primeiro[i] + 4 * " ")
+        segunda_linha += operacao[i] + (" " * (5 - len(segundo[i])) + segundo[i] + 4 * " ")
+        dashes += "-" * 5 + " " * 4
+        conta = str(op[operacao[i]](primeiro[i], segundo[i]))
+        resultado += (" " * (5 - len(str(conta))) + conta + 4 * " ")
 
-        arranged_problems += (' ' * (5 - len(primeiro)) + primeiro + ' ' * 4 * ())
-        # temp = op[operacao](primeiro, segundo)
-        # resultado += (' ' * (5 - len(str(temp))) + str(temp) + ' ' * 4)
+    primeira_linha = primeira_linha[:-4] + "\n"
+    segunda_linha = segunda_linha[:-4] + "\n"
+    dashes = dashes[:-4]
+    resultado = resultado[:-4]
 
-    arranged_problems += "\n"
-
-    for i in range(qty):
-        arranged_problems += (problems[i].split()[1] + ' ' * (4 - len(problems[i].split()[2])) + problems[i].split()[
-            2] + " " * 4)
-    arranged_problems += "\n"
-
-    for i in range(qty):
-        arranged_problems += ("-" * 5 + " " * 4)
-
-    if resolve:
-        arranged_problems += "\n"+ resultado
+    if len(problems) == 2:
+        problems, resolve = problems
+        if resolve:
+            arranged_problems = primeira_linha + segunda_linha + dashes + "\n" + resultado
+    else:
+        arranged_problems = primeira_linha + segunda_linha + dashes
 
     return arranged_problems
+
