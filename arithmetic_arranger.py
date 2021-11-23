@@ -1,21 +1,9 @@
-def arithmetic_arranger(problems):
-    arranged_problems = ""
-    resultado = ""
-    resolve = None
-
-    if isinstance(problems, list):
-        if isinstance(problems[0], list) and len(problems) == 2:
-            resolve = problems[1]
-            problems = problems[0]
-        else:
-            if isinstance(problems[0], list):
-                problems = problems[0]
-                resolve = False
-
+def arithmetic_arranger(problems, resolve=False):
     if len(problems) > 5:
         return "Error: Too many problems."
 
     for problema in problems:
+        print(problema)
         conta = problema.split()
         if conta[1] not in {"+", "-"}:
             return "Error: Operator must be '+' or '-'."
@@ -69,5 +57,4 @@ def arithmetic_arranger(problems):
         arranged_problems = primeira_linha + segunda_linha + dashes
 
     return arranged_problems
-
 
